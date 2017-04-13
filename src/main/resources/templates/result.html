@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+
+<head>
+</head>
+
+<body>
+<div th:fragment="calculation">
+    <p th:text="${result.formattedExpression} ? 'Formatted Expression: ' + ${result.formattedExpression}"></p>
+    <p th:text="${result.rpn} ? 'Reverse Polish Notation: ' + ${result.rpn}"></p>
+    <p th:class="${result.error} ? 'error'"
+          th:text="${result.error} ? 'Error: ' + ${result.error} : 'Result: ' + ${result.calculation}"></p>
+</div>
+</body>
+</html>

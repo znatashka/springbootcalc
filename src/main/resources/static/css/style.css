@@ -1,0 +1,11 @@
+html, input {
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}

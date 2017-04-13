@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th='http://www.thymeleaf.org' lang='ru'>
+<head>
+    <meta charset='UTF-8'/>
+    <title>Calculator</title>
+
+    <link rel='stylesheet' th:href='@{/css/style.css}' type='text/css' media='screen'/>
+
+    <script th:src='@{/js/jquery-3.2.1.min.js}' type='text/javascript'></script>
+    <script th:src='@{/js/function.js}' type='text/javascript'></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet"/>
+</head>
+<body>
+<form>
+    <h3>Calculation</h3>
+    <div>
+        <div>
+            <label for='expression'>Math Expression:</label>
+            <input type='text' id='expression'/>
+
+            <input type='button' onclick='calc()' value='Get Result'/>
+        </div>
+        <br/>
+        <div id='result-block'></div>
+    </div>
+</form>
+</body>
+</html>
