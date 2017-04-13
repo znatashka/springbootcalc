@@ -2,11 +2,12 @@ package u26c4.brain.analyzer;
 
 import org.apache.commons.lang3.StringUtils;
 import u26c4.brain.Brain;
+import u26c4.brain.analyzer.exception.RNPException;
 import u26c4.builders.ResultBuilder;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.SPACE;
 import static u26c4.brain.analyzer.Utils.formatExpression;
 
 @SuppressWarnings("unchecked")
@@ -17,17 +18,20 @@ public class LexicalAnalyzer extends Brain<String> {
         log.info("### LexerAnalyzer is working");
 
         if (StringUtils.isBlank(expression)) {
-            resultBuilder.buildError("Empty Expression");
-            return resultBuilder;
+            return resultBuilder.buildError("Empty Expression");
         } else {
             String formattedExpression = formatExpression(expression);
             resultBuilder.buildFormattedExpression(formattedExpression);
-            return next.analyze(
-                    resultBuilder,
-                    Stream
-                            .of(formattedExpression.split(StringUtils.SPACE))
-                            .collect(Collectors.toList())
-            );
+
+            try {
+                List<String> stack = new RPN().calculate(formattedExpression);
+
+                resultBuilder.buildRPN(StringUtils.join(stack, SPACE));
+                return next.analyze(resultBuilder, stack);
+            } catch (RNPException e) {
+                log.error(e.getMessage(), e);
+                return resultBuilder.buildError(e.getMessage());
+            }
         }
     }
 }
