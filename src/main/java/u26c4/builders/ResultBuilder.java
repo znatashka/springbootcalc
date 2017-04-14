@@ -24,7 +24,7 @@ public class ResultBuilder {
         return this;
     }
 
-    public ResultBuilder buildCalculation(float calculation) {
+    public ResultBuilder buildCalculation(double calculation) {
         calcResult.setCalculation(calculation);
         return this;
     }

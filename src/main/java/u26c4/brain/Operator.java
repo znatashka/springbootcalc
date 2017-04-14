@@ -4,18 +4,55 @@ import lombok.Getter;
 import u26c4.brain.exception.BrainException;
 
 import java.util.Arrays;
+import java.util.function.DoubleBinaryOperator;
 
-/**
- * Created by Nataliia_Zolotovitck on 14.04.2017.
- */
-public enum Operator {
-    OPENING_BRACKET("(", 0),
-    CLOSING_BRACKET(")", 0),
-    PLUS("+", 1),
-    MINUS("-", 1),
-    MULTIPLY("*", 2),
-    DIVIDE("/", 2),
-    DEGREE("^", 3);
+public enum Operator implements DoubleBinaryOperator {
+
+    OPENING_BRACKET("(", 0) {
+        @Override
+        public double applyAsDouble(double left, double right) {
+            return 0;
+        }
+    },
+    CLOSING_BRACKET(")", 0) {
+        @Override
+        public double applyAsDouble(double left, double right) {
+            return 0;
+        }
+    },
+    PLUS("+", 1) {
+        @Override
+        public double applyAsDouble(double left, double right) {
+            return left + right;
+        }
+    },
+    MINUS("-", 1) {
+        @Override
+        public double applyAsDouble(double left, double right) {
+            return left - right;
+        }
+    },
+    MULTIPLY("*", 2) {
+        @Override
+        public double applyAsDouble(double left, double right) {
+            return left * right;
+        }
+    },
+    DIVIDE("/", 2) {
+        @Override
+        public double applyAsDouble(double left, double right) {
+            if (right == 0) {
+                throw new BrainException("Division by zero");
+            }
+            return left / right;
+        }
+    },
+    DEGREE("^", 3) {
+        @Override
+        public double applyAsDouble(double left, double right) {
+            return Math.pow(left, right);
+        }
+    };
 
     @Getter
     private int priority;

@@ -11,5 +11,5 @@ public class CalcResult {
     private String error;
     private String formattedExpression;
     private String rpn;
-    private Float calculation;
+    private Double calculation;
 }

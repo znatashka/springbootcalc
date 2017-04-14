@@ -23,7 +23,7 @@ class RPN {
         Stack<Object> out = new Stack<>();
 
         Arrays.asList(expression.split(SPACE)).forEach(item -> {
-            if (StringUtils.isNumeric(item)) {
+            if (Utils.isNumber(item)) {
                 out.push(new BigDecimal(item));
             } else {
                 Operator nextOp = findBySymbol(item);
