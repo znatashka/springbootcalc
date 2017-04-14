@@ -2,9 +2,11 @@ package u26c4.brain.analyzer;
 
 import org.apache.commons.lang3.StringUtils;
 import u26c4.brain.Brain;
-import u26c4.brain.analyzer.exception.RNPException;
+import u26c4.brain.Operator;
+import u26c4.brain.exception.BrainException;
 import u26c4.builders.ResultBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.SPACE;
@@ -24,11 +26,11 @@ public class LexicalAnalyzer extends Brain<String> {
             resultBuilder.buildFormattedExpression(formattedExpression);
 
             try {
-                List<String> stack = new RPN().calculate(formattedExpression);
+                List<?> stack = new RPN().calculate(formattedExpression);
 
                 resultBuilder.buildRPN(StringUtils.join(stack, SPACE));
                 return next.analyze(resultBuilder, stack);
-            } catch (RNPException e) {
+            } catch (BrainException e) {
                 log.error(e.getMessage(), e);
                 return resultBuilder.buildError(e.getMessage());
             }
