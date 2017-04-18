@@ -1,8 +1,6 @@
 package u26c4.brain.analyzer;
 
-import org.apache.commons.lang3.StringUtils;
 import u26c4.brain.Operator;
-import u26c4.brain.exception.BrainException;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
