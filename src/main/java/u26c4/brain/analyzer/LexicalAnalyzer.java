@@ -1,39 +1,61 @@
 package u26c4.brain.analyzer;
 
-import org.apache.commons.lang3.StringUtils;
-import u26c4.brain.Brain;
 import u26c4.brain.Operator;
-import u26c4.brain.exception.BrainException;
-import u26c4.builders.ResultBuilder;
+import u26c4.builders.BrainExceptionBuilder;
+import u26c4.models.Tree;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.util.StringTokenizer;
 
-import static org.apache.commons.lang3.StringUtils.SPACE;
-import static u26c4.brain.analyzer.Utils.formatExpression;
+class LexicalAnalyzer {
 
-@SuppressWarnings("unchecked")
-public class LexicalAnalyzer extends Brain<String> {
+    static Tree evaluate(String expression) {
+        BrainExceptionBuilder exceptionBuilder = new BrainExceptionBuilder();
 
-    @Override
-    public ResultBuilder analyze(ResultBuilder resultBuilder, String expression) {
-        log.info("### LexerAnalyzer is working");
+        Tree root = buildParseTree(expression);
 
-        if (StringUtils.isBlank(expression)) {
-            return resultBuilder.buildError("Empty Expression");
-        } else {
-            String formattedExpression = formatExpression(expression);
-            resultBuilder.buildFormattedExpression(formattedExpression);
+        if (exceptionBuilder.hasErrors()) {
+            throw exceptionBuilder
+                    .buildHtml()
+                    .build();
+        }
+        return root;
+    }
 
-            try {
-                List<?> stack = new RPN().calculate(formattedExpression);
-
-                resultBuilder.buildRPN(StringUtils.join(stack, SPACE));
-                return next.analyze(resultBuilder, stack);
-            } catch (BrainException e) {
-                log.error(e.getMessage(), e);
-                return resultBuilder.buildError(e.getMessage());
+    private static Tree buildParseTree(String expression) {
+        Tree root = new Tree();
+        Tree current = root;
+        StringTokenizer tokenizer = new StringTokenizer(expression);
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            if (Utils.isNumeric(token)) {
+                current.setToken(token);
+                current = current.getParent();
+            } else {
+                Operator operator = Operator.findBySymbol(token);
+                switch (operator) {
+                    case OPENING_BRACKET:
+                        Tree openBr = new Tree();
+                        openBr.setParent(current);
+                        current.setLeft(openBr);
+                        current = openBr;
+                        break;
+                    case PLUS:
+                    case MINUS:
+                    case DIVIDE:
+                    case MULTIPLY:
+                    case DEGREE:
+                        Tree op = new Tree();
+                        op.setParent(current);
+                        current.setRight(op);
+                        current.setToken(token);
+                        current = op;
+                        break;
+                    case CLOSING_BRACKET:
+                        current = current.getParent();
+                        break;
+                }
             }
         }
+        return root;
     }
 }

@@ -21,7 +21,7 @@ class RPN {
         Stack<Object> out = new Stack<>();
 
         Arrays.asList(expression.split(SPACE)).forEach(item -> {
-            if (Utils.isNumber(item)) {
+            if (Utils.isNumeric(item)) {
                 out.push(new BigDecimal(item));
             } else {
                 Operator nextOp = findBySymbol(item);

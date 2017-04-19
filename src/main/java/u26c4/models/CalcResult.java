@@ -11,4 +11,5 @@ public class CalcResult {
     private String formattedExpression;
     private String rpn;
     private Double calculation;
+    private Tree parseTree;
 }

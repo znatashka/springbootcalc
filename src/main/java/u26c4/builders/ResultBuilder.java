@@ -1,6 +1,7 @@
 package u26c4.builders;
 
 import u26c4.models.CalcResult;
+import u26c4.models.Tree;
 
 public class ResultBuilder {
     private CalcResult calcResult;
@@ -26,6 +27,11 @@ public class ResultBuilder {
 
     public ResultBuilder buildCalculation(double calculation) {
         calcResult.setCalculation(calculation);
+        return this;
+    }
+
+    public ResultBuilder buildParseTree(Tree parseTree) {
+        calcResult.setParseTree(parseTree);
         return this;
     }
 

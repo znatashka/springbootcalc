@@ -77,7 +77,7 @@ public class CalcControllerTest {
         assertTrue(contentAsString.contains("Formatted Expression: Formatted Expression"));
         assertTrue(contentAsString.contains("Reverse Polish Notation: Reverse Polish Notation"));
         assertTrue(contentAsString.contains("Result: 45.67"));
-        assertTrue(contentAsString.contains("Error: Test Error"));
+        assertTrue(contentAsString.contains("Errors: Test Error"));
 
         verify(calcService, times(1)).execute(null);
         verifyNoMoreInteractions(calcService);

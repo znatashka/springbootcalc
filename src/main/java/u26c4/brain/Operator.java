@@ -1,7 +1,7 @@
 package u26c4.brain;
 
 import lombok.Getter;
-import u26c4.brain.exception.BrainException;
+import u26c4.builders.BrainExceptionBuilder;
 
 import java.util.Arrays;
 import java.util.function.DoubleBinaryOperator;
@@ -41,8 +41,11 @@ public enum Operator implements DoubleBinaryOperator {
     DIVIDE("/", 2) {
         @Override
         public double applyAsDouble(double left, double right) {
-            if (right == 0) {
-                throw new BrainException("Division by zero");
+            if (right == 0.0) {
+                throw new BrainExceptionBuilder()
+                        .buildError("Division by zero")
+                        .buildHtml()
+                        .build();
             }
             return left / right;
         }
@@ -68,7 +71,11 @@ public enum Operator implements DoubleBinaryOperator {
         return Arrays.stream(Operator.values()).
                 filter(operator -> operator.symbol.equals(symbol))
                 .findFirst()
-                .orElseThrow(() -> new BrainException("Unknown symbol: `" + symbol + "`"));
+                .orElseThrow(() ->
+                        new BrainExceptionBuilder()
+                                .buildError("Unknown symbol: `" + symbol + "`")
+                                .buildHtml()
+                                .build());
     }
 
     @Override

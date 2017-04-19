@@ -32,7 +32,7 @@ public class UtilsIsNumberTest {
     @Test
     public void isNumber() throws Exception {
         // ACT
-        boolean isNumRes = Utils.isNumber(number);
+        boolean isNumRes = Utils.isNumeric(number);
 
         // ASSERT
         assertEquals(isNumRes, isNum);
