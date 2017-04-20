@@ -53,6 +53,12 @@ public enum Operator implements DoubleBinaryOperator {
     DEGREE("^", 3) {
         @Override
         public double applyAsDouble(double left, double right) {
+            if (right < 0.0) {
+                throw new BrainExceptionBuilder()
+                        .buildError("Negative exponent")
+                        .buildHtml()
+                        .build();
+            }
             return Math.pow(left, right);
         }
     };
@@ -68,14 +74,19 @@ public enum Operator implements DoubleBinaryOperator {
     }
 
     public static Operator findBySymbol(String symbol) {
-        return Arrays.stream(Operator.values()).
-                filter(operator -> operator.symbol.equals(symbol))
+        return Arrays.stream(Operator.values())
+                .filter(operator -> operator.symbol.equals(symbol))
                 .findFirst()
                 .orElseThrow(() ->
                         new BrainExceptionBuilder()
                                 .buildError("Unknown symbol: `" + symbol + "`")
                                 .buildHtml()
                                 .build());
+    }
+
+    public static boolean isOperator(String symbol) {
+        return Arrays.stream(Operator.values())
+                .anyMatch(operator -> operator.symbol.equals(symbol));
     }
 
     @Override

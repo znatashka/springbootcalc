@@ -19,6 +19,9 @@ class Utils {
     }
 
     static boolean isNumeric(String s) {
+        if (StringUtils.isBlank(s)) {
+            return false;
+        }
         for (Character c : s.toCharArray()) {
             if (isNumeric(c)) {
                 return false;
