@@ -45,7 +45,6 @@ class LexicalAnalyzer {
                     root.setRight(num);
                     root.getRight().setParent(root);
                 }
-                // если два числа через пробел, то ошибка
             } else {
                 Operator operator = Operator.findBySymbol(token);
                 switch (operator) {
@@ -75,14 +74,13 @@ class LexicalAnalyzer {
                             }
                             root = op;
                         }
-                        // если два оператора через пробел, то ошибка
                         break;
                     case CLOSING_BRACKET:
                         break;
                 }
             }
         }
-        return findRoot(root);
+        return findRealRoot(root);
     }
 
     private static String getLastToken(Stack<String> lastTokenStack) {
@@ -93,10 +91,10 @@ class LexicalAnalyzer {
         return lastToken;
     }
 
-    private static Tree findRoot(Tree root) {
+    private static Tree findRealRoot(Tree root) {
         if (root.getParent() == null) {
             return root;
         }
-        return findRoot(root.getParent());
+        return findRealRoot(root.getParent());
     }
 }

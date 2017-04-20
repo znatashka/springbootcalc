@@ -10,6 +10,11 @@ html, input {
     color: gray;
 }
 
+.gray-item {
+    font-size: 12px;
+    padding-left: 5em;
+}
+
 .tree {
     width: 0%;
 }
