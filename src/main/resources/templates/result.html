@@ -12,18 +12,35 @@
     <p th:text="${result.calculation} ? 'Result: ' + ${result.calculation}"></p>
     <div th:class="${result.error} ? 'error'" th:utext="${result.error} ? 'Errors: ' + ${result.error}"></div>
 
-    <!-- TODO java.lang.StackOverflowError: null -->
-    <!--<div th:if="${result.parseTree != null}"  th:with="tree=${result.parseTree}">-->
-        <!--Parse Tree:-->
-        <!--<br/>-->
-
-        <!--<div th:fragment="submenu">-->
-            <!--<p th:text="${tree.token}"></p>-->
-            <!--<div th:if="${tree.left != null}" th:replace="this :: submenu" th:with="tree=${tree.left}" />-->
-            <!--<div th:if="${tree.right != null}" th:replace="this :: submenu" th:with="tree=${tree.right}" />-->
-        <!--</div>-->
-
-    <!--</div>-->
+    <div th:if="${result.parseTree != null}" th:with="tree=${result.parseTree}">
+        Parse Tree:
+        <br/>
+        <div class="tree">
+            <ul>
+                <li>
+                    <div th:text="${tree.token}"></div>
+                    <div th:fragment="submenu" th:remove="tag">
+                        <ul th:if="${tree.left != null and tree.right != null}">
+                            <li>
+                                <div th:text="${tree.left.token}"></div>
+                                <div th:include="result :: submenu"
+                                     th:with="tree=${tree.left}"
+                                     th:remove="tag">
+                                </div>
+                            </li>
+                            <li>
+                                <div th:text="${tree.right.token}"></div>
+                                <div th:include="result :: submenu"
+                                     th:with="tree=${tree.right}"
+                                     th:remove="tag">
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
 </div>
 </body>
 </html>
