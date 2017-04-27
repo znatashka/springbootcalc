@@ -103,12 +103,16 @@ class LexicalAnalyzer {
 
     private static Tree createOperationNode(Tree root, Operator operator) {
         Tree op = new Tree(operator.getSymbol());
-        if (operator.getPriority() > Operator.findBySymbol(root.getToken()).getPriority()) { // FIXME: 25.04.2017 поправить порядок слева направо
+        if (operator.getPriority() > Operator.findBySymbol(root.getToken()).getPriority()) {
             op.setLeft(root.getRight());
             root.setRight(op);
             op.setParent(root);
         } else {
             op.setLeft(root);
+            if (root.getParent() != null) {
+                op.setParent(root.getParent());
+                root.getParent().setRight(op);
+            }
             root.setParent(op);
         }
         return op;
