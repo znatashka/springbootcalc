@@ -28,25 +28,15 @@ class LexicalAnalyzer {
 
     private static Tree buildParseTree(String expression, BrainExceptionBuilder exceptionBuilder) {
         Tree root = new Tree();
-        Stack<String> lastTokenStack = new Stack<>();
         StringTokenizer tokenizer = new StringTokenizer(expression);
         while (tokenizer.hasMoreTokens()) {
             String token = tokenizer.nextToken();
-            String lastToken = getLastToken(lastTokenStack);
             if (Utils.isNumeric(token)) {
-                if (Utils.isNumeric(lastToken)) {
-                    exceptionBuilder.buildError(String.format("Double number: %s %s", lastToken, token));
-                } else if (lastToken != null && Operator.findBySymbol(lastToken) == Operator.CLOSING_BRACKET) {
-                    exceptionBuilder.buildError(String.format("Closing bracket before number: %s %s", lastToken, token));
-                }
                 createNumericNode(root, token);
             } else {
                 Operator operator = Operator.findBySymbol(token);
                 switch (operator) {
                     case OPENING_BRACKET:
-                        if (Utils.isNumeric(lastToken)) {
-                            exceptionBuilder.buildError(String.format("Number before opening bracket: %s %s", lastToken, token));
-                        }
                         createSubTree(exceptionBuilder, root, tokenizer, new ArrayDeque<>());
                         break;
                     case PLUS:
@@ -54,10 +44,6 @@ class LexicalAnalyzer {
                     case DIVIDE:
                     case MULTIPLY:
                     case DEGREE:
-                        lastTokenStack.push(token);
-                        if (Operator.isOperator(lastToken) && Operator.findBySymbol(lastToken) != Operator.CLOSING_BRACKET) {
-                            exceptionBuilder.buildError(String.format("Double operator: %s %s", lastToken, token));
-                        }
                         if (StringUtils.isBlank(root.getToken())) {
                             root.setToken(token);
                         } else {
@@ -137,14 +123,6 @@ class LexicalAnalyzer {
             root.setRight(num);
             root.getRight().setParent(root);
         }
-    }
-
-    private static String getLastToken(Stack<String> lastTokenStack) {
-        String lastToken = null;
-        if (CollectionUtils.isNotEmpty(lastTokenStack)) {
-            lastToken = lastTokenStack.pop();
-        }
-        return lastToken;
     }
 
     private static Tree findRealRoot(Tree root) {
