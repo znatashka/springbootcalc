@@ -5,10 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.ConfigurableEnvironment;
-import u26c4.builders.ResultBuilder;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
